@@ -1,0 +1,72 @@
+"use client";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { Game } from "./GameState";
+import Button from "../components/atoms/Button/Button";
+
+type BoardProps = {
+  height: number;
+  width: number;
+};
+
+const TicTacToeBoard = ({ height, width }: BoardProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [messageStatus, setMessageStatus] = useState<string | undefined>();
+  const [game, setGame] = useState<Game>();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (canvas && context) {
+      context.lineWidth = 5;
+      context.strokeStyle = "#545965";
+      const newGame = new Game(context, canvas);
+      setGame(newGame);
+      setMessageStatus(newGame?.getMessageStatus);
+      context?.beginPath();
+      context?.moveTo(width / 3, 0);
+      context?.lineTo(width / 3, height);
+      context?.moveTo((width / 3) * 2, 0);
+      context?.lineTo((width / 3) * 2, height);
+      context?.moveTo(0, height / 3);
+      context?.lineTo(width, height / 3);
+      context?.moveTo(0, (height / 3) * 2);
+      context?.lineTo(width, (height / 3) * 2);
+      context?.stroke();
+    }
+  }, []);
+
+  const handleBoardClick: MouseEventHandler<HTMLCanvasElement> = (event) => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (canvas && context) {
+      context.lineWidth = 10;
+      const rect = canvas?.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const modX = x % 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
+      const modY = y % 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
+      const position = (2 * (y - modY) + (x - modX + y - modY)) / 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
+      const pointX = x - modX;
+      const pointY = y - modY;
+      const messageStatus = game?.move(pointX, pointY, position);
+      setMessageStatus(messageStatus); // TODO: establecer mensaje de empate
+    }
+  };
+
+  const resetGame = () => {};
+
+  return (
+    <div>
+      <canvas
+        ref={canvasRef}
+        width={width}
+        height={height}
+        onClick={handleBoardClick}
+      ></canvas>
+      <p>{messageStatus}</p>
+      <Button onClick={resetGame} text="Reiniciar" />
+    </div>
+  );
+};
+
+export default TicTacToeBoard;
