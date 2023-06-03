@@ -25,8 +25,8 @@ export class Game {
     this.board = Array(9).fill(null);
     this.winner = null;
     this.context = context;
-    this.state = new TurnPlayerXState();
-    this.currentPlayer = "X";
+    this.currentPlayer = this.getRandomInitPlayer();
+    this.state = this.currentPlayer === 'X' ? new TurnPlayerXState() : new TurnPlayerOState();
     this.messageStatus = `Turno del jugador ${this.currentPlayer}`;
     this.canvas = canvas;
   }
@@ -67,16 +67,21 @@ export class Game {
     return this.canvas;
   }
 
+  get getBoard(): Array<string> {
+    return this.board;
+  }
+
+  getRandomInitPlayer(): string {
+    const randNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+    return randNumber === 1 ? "X" : "O";
+  }
+
   move(pointX: number, pointY: number, position: number): string {
     return this.state.move(this, pointX, pointY, position);
   }
 
   setMoveBoard(player: string, position: number) {
     this.board[position] = player;
-  }
-
-  get getBoard(): Array<string> {
-    return this.board;
   }
 
   // Ir filtrando y si no hay opciones de ganar, declarar empate, así haya más casillas por poner

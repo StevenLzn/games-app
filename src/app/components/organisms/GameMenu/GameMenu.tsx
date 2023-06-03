@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import IconButton from "../../atoms/IconButton/IconButton";
 import { IoSettingsSharp } from "react-icons/io5";
 import { AiFillHome } from "react-icons/ai";
@@ -10,6 +11,9 @@ type GameMenuProps = {
 };
 
 export const GameMenu = ({ title }: GameMenuProps) => {
+
+  const router = useRouter();
+
   const handleOnChange = () => {
     console.log("change!");
   };
@@ -20,7 +24,7 @@ export const GameMenu = ({ title }: GameMenuProps) => {
 
   return (
     <GameMenuContainer>
-      <IconButton onClick={() => console.log("click")}>
+      <IconButton onClick={() => router.push('/')}>
         <AiFillHome />
       </IconButton>
       <Title text={title}></Title>

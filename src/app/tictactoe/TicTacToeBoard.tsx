@@ -14,6 +14,10 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
   const [game, setGame] = useState<Game>();
 
   useEffect(() => {
+    initGame();
+  }, []);
+
+  const initGame = (): void => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
     if (canvas && context) {
@@ -33,7 +37,7 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
       context?.lineTo(width, (height / 3) * 2);
       context?.stroke();
     }
-  }, []);
+  };
 
   const handleBoardClick: MouseEventHandler<HTMLCanvasElement> = (event) => {
     const canvas = canvasRef.current;
@@ -53,7 +57,14 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
     }
   };
 
-  const resetGame = () => {};
+  const resetGame = () => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (canvas && context) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      initGame();
+    }
+  };
 
   return (
     <div>
