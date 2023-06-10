@@ -11,11 +11,9 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({ text, onClick, icon, disabled }) => {
   return (
-    <>
-      <ButtonContainer onClick={onClick} disabled={disabled}>
-        {text}
-      </ButtonContainer>
-    </>
+    <ButtonContainer onClick={onClick} disabled={disabled}>
+      {text}
+    </ButtonContainer>
   );
 };
 

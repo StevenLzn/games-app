@@ -2,6 +2,7 @@
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { Game } from "./GameState";
 import Button from "../components/atoms/Button/Button";
+import style from "./TicTacToeBoard.module.css";
 
 type BoardProps = {
   height: number;
@@ -22,7 +23,7 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
     const context = canvas?.getContext("2d");
     if (canvas && context) {
       context.lineWidth = 5;
-      context.strokeStyle = "#545965";
+      context.strokeStyle = "#343541";
       const newGame = new Game(context, canvas);
       setGame(newGame);
       setMessageStatus(newGame?.getMessageStatus);
@@ -66,17 +67,32 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
     }
   };
 
+  const getPlayerClass = (player: string) => {
+    if (game?.getWinner === player) return style.winner;
+    if (game?.getCurrentPlayer === player) return style.turn;
+    return style.default;
+  };
+
   return (
-    <div>
+    <>
+      <div className={style.statusContainer}>
+        <div className={style.playersContainer}>
+          <p className={`${style.player} ${style.playerX} ${getPlayerClass("X")}`}>X</p>
+          <p className={`${style.player} ${style.playerY} ${getPlayerClass("O")}`}>O</p>
+        </div>
+        <p className={style.messageStatus}>{messageStatus}</p>
+      </div>
       <canvas
         ref={canvasRef}
         width={width}
         height={height}
         onClick={handleBoardClick}
+        className={style.board}
       ></canvas>
-      <p>{messageStatus}</p>
-      <Button onClick={resetGame} text="Reiniciar" />
-    </div>
+      <div className={style.actionsContainer}>
+        <Button onClick={resetGame} text="Reiniciar" />
+      </div>
+    </>
   );
 };
 

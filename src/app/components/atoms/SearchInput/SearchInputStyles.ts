@@ -1,5 +1,5 @@
-'use client';
-import styled from 'styled-components';
+"use client";
+import styled from "styled-components";
 
 export const InputContainer = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ export const InputContainer = styled.div`
   border: 2px solid #ebedf3;
   border-radius: 20px;
   padding: 0.5rem 1rem;
-  width: ${props => props.style?.width};
+  width: ${(props) => props.style?.width};
 `;
 
 export const Input = styled.input`

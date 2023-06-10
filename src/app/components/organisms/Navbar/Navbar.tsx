@@ -19,7 +19,7 @@ const Navbar = () => {
         placeholder="Buscar un juego"
         value=""
         onChange={handleOnChange}
-        width="30%"
+        width="35%"
       ></SearchInput>
     </NavbarContainer>
   );

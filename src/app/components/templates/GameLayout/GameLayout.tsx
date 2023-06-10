@@ -1,5 +1,6 @@
 import StyledComponentsRegistry from "@/lib/styled-components/registry";
 import { GameMenu } from "../../organisms/GameMenu/GameMenu";
+import styles from "./GameLayout.module.css";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ export const GameLayout = ({ children, title }: LayoutProps) => {
     <StyledComponentsRegistry>
       <div>
         <GameMenu title={title} />
-        <main>{children}</main>
+        <main className={styles.gameContainer}>{children}</main>
       </div>
     </StyledComponentsRegistry>
   );

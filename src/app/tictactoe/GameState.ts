@@ -118,7 +118,7 @@ class TurnPlayerXState implements State {
     if (game.getBoard[position] !== null) return game.getMessageStatus;
     const drawPointX = pointX + 15;
     const drawPointY = pointY + 15;
-    context.strokeStyle = "#739BFF";
+    context.strokeStyle = "#1349CD";
     context?.beginPath();
     context?.moveTo(drawPointX, drawPointY);
     context?.lineTo(drawPointX + 70, drawPointY + 70);
@@ -145,14 +145,14 @@ class TurnPlayerOState implements State {
     if (game.getBoard[position] !== null) return game.getMessageStatus;
     const drawPointX = pointX + 50;
     const drawPointY = pointY + 50;
-    context.strokeStyle = "#FF6262";
+    context.strokeStyle = "#DB0000";
     context.beginPath();
     context.arc(drawPointX, drawPointY, 35, 0, 2 * Math.PI);
     context.stroke();
     game.setMoveBoard("O", position);
     if (game.checkIsWinner(position)) {
       game.setWinner = game.getCurrentPlayer;
-      game.setMessageStatus = `Ha ganado el jugador ${game.getWinner}`;
+      game.setMessageStatus = `Ganador el jugador ${game.getWinner}`;
       game.setState = new WinnerState();
     } else {
       game.setCurrentPlayer = "X";

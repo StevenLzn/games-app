@@ -1,0 +1,64 @@
+.statusContainer {
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1.6px 3.6px 0px,
+    rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
+  margin: 0.5rem 0;
+  width: 225px;
+}
+
+.messageStatus {
+  color: #343541;
+  margin: 0;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.playersContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.player {
+  border-radius: 8px;
+  font-size: 65px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.5rem;
+  text-align: center;
+  width: 50%;
+}
+
+.playerX {
+  color: #1349cd;
+  margin-right: 2px;
+}
+
+.playerY {
+  color: #db0000;
+}
+
+.turn {
+  background: #faffa894;
+  box-shadow: #e6ed6d 0px 0.2px 2.6px 0px, #e6ed6d 0px 0.3px 0.9px 0px;
+  transition: all 150ms cubic-bezier(0.2, -0.11, 0.45, 1.03) 0ms;
+}
+
+.default {
+  background: white;
+  border: none;
+  transition: all 150ms cubic-bezier(0.2, -0.11, 0.45, 1.03) 0ms;
+}
+
+.winner {
+  background: #a9ffa891;
+  box-shadow: #0bf709b8 0px 0.2px 2.6px 0px, #0bf709b8 0px 0.3px 0.9px 0px;
+  transition: all 150ms cubic-bezier(0.2, -0.11, 0.45, 1.03) 0ms;
+}
+
+.board {
+  margin: 0.5rem 0;
+}
+
+.actionsContainer {
+  margin: 0.5rem 0;
+}
