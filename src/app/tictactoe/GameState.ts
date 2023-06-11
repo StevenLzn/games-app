@@ -10,25 +10,22 @@ export class Game {
   private canvas: HTMLCanvasElement;
   private currentPlayer: string;
   private messageStatus: string;
-  public winCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  private winCombinations: number[][];
+  private winnerCombination: number[];
 
   constructor(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     this.board = Array(9).fill(null);
     this.winner = null;
     this.context = context;
     this.currentPlayer = this.getRandomInitPlayer();
-    this.state = this.currentPlayer === 'X' ? new TurnPlayerXState() : new TurnPlayerOState();
+    this.state =
+      this.currentPlayer === "X"
+        ? new TurnPlayerXState()
+        : new TurnPlayerOState();
     this.messageStatus = `Turno del jugador ${this.currentPlayer}`;
     this.canvas = canvas;
+    this.winCombinations = this.getWinCombinationsInit;
+    this.winnerCombination = [];
   }
 
   set setState(state: State) {
@@ -51,6 +48,10 @@ export class Game {
     return this.winner;
   }
 
+  get getWinnerCombination(): number[] {
+    return this.winnerCombination;
+  }
+
   get getMessageStatus(): string {
     return this.messageStatus;
   }
@@ -71,6 +72,23 @@ export class Game {
     return this.board;
   }
 
+  get getWinCombinationsInit(): number[][] {
+    return [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+  }
+
+  get getWinCombinations(): number[][] {
+    return this.winCombinations;
+  }
+
   getRandomInitPlayer(): string {
     const randNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
     return randNumber === 1 ? "X" : "O";
@@ -84,22 +102,29 @@ export class Game {
     this.board[position] = player;
   }
 
-  // Ir filtrando y si no hay opciones de ganar, declarar empate, así haya más casillas por poner
-  checkIsWinner(position: number) {
+  checkIsWinner(positionMove: number): boolean {
     const winOptions = this.winCombinations.filter((combination) =>
       combination.some(
-        (combinationPosition) => combinationPosition === position
+        (combinationPosition) => combinationPosition === positionMove
       )
     );
-
     let winningCount = 0;
     for (const option of winOptions) {
       for (const position of option) {
         if (this.getBoard[position] === this.currentPlayer) {
           winningCount++;
+        } else if (this.getBoard[position]) {
+          this.winCombinations = this.winCombinations.filter(
+            (possibility) =>
+              !possibility.every((element, index) => element == option[index])
+          );
         }
       }
-      if (winningCount === 3) return true;
+      if (winningCount === 3) {
+        this.winnerCombination = option;
+        return true;
+      }
+
       winningCount = 0;
     }
 
@@ -126,16 +151,23 @@ class TurnPlayerXState implements State {
     context?.lineTo(drawPointX + 70, drawPointY);
     context?.stroke();
     game.setMoveBoard("X", position);
+    this.setNextState(game, position);
+    return game.getMessageStatus;
+  }
+
+  setNextState(game: Game, position: number) {
     if (game.checkIsWinner(position)) {
       game.setWinner = game.getCurrentPlayer;
       game.setMessageStatus = `Ha ganado el jugador ${game.getWinner}`;
-      game.setState = new WinnerState();
+      game.setState = new EndGameState();
+    } else if (game.getWinCombinations.length <= 1) {
+      game.setMessageStatus = `Empate, reinicia el juego`;
+      game.setState = new EndGameState();
     } else {
       game.setCurrentPlayer = "O";
       game.setMessageStatus = `Turno del jugador ${game.getCurrentPlayer}`;
       game.setState = new TurnPlayerOState();
     }
-    return game.getMessageStatus;
   }
 }
 
@@ -150,20 +182,27 @@ class TurnPlayerOState implements State {
     context.arc(drawPointX, drawPointY, 35, 0, 2 * Math.PI);
     context.stroke();
     game.setMoveBoard("O", position);
+    this.setNextState(game, position);
+    return game.getMessageStatus;
+  }
+
+  setNextState(game: Game, position: number) {
     if (game.checkIsWinner(position)) {
       game.setWinner = game.getCurrentPlayer;
       game.setMessageStatus = `Ganador el jugador ${game.getWinner}`;
-      game.setState = new WinnerState();
+      game.setState = new EndGameState();
+    } else if (game.getWinCombinations.length <= 1) {
+      game.setMessageStatus = `Empate, reinicia el juego`;
+      game.setState = new EndGameState();
     } else {
       game.setCurrentPlayer = "X";
       game.setMessageStatus = `Turno del jugador ${game.getCurrentPlayer}`;
       game.setState = new TurnPlayerXState();
     }
-    return game.getMessageStatus;
   }
 }
 
-class WinnerState implements State {
+class EndGameState implements State {
   move(game: Game, clientX: number, clientY: number): string {
     return game.getMessageStatus;
   }
