@@ -131,9 +131,62 @@ export class Game {
     return false;
   }
 
-  // Dibujar línea ganadora
-  drawWinnerLine(context: CanvasRenderingContext2D) {
-    context?.beginPath();
+  drawWinnerLine() {
+    if (this.context) {
+      this.context.beginPath();
+      this.context.strokeStyle = "#fbec39bd";
+      this.context.lineWidth = 15;
+      const initPointXCalc = (this.winnerCombination[0] % 3) * 100;
+      const initPointYCalc = Math.floor(this.winnerCombination[0] / 3) * 100;
+      const endPointXCalc = (this.winnerCombination[2] % 3) * 100;
+      const endPointYCalc = Math.floor(this.winnerCombination[2] / 3) * 100;
+
+      const { initPointX, initPointY, endPointX, endPointY } =
+        this.resizePoints(
+          initPointXCalc,
+          initPointYCalc,
+          endPointXCalc,
+          endPointYCalc
+        );
+      this.context.moveTo(initPointX, initPointY);
+      this.context.lineTo(endPointX, endPointY);
+      this.context.stroke();
+    }
+  }
+
+  resizePoints(
+    initPointX: number,
+    initPointY: number,
+    endPointX: number,
+    endPointY: number
+  ): {
+    initPointX: number;
+    initPointY: number;
+    endPointX: number;
+    endPointY: number;
+  } {
+    if (initPointX === endPointX) {
+      endPointX += endPointX === 200 && initPointX != 200 ? 100 : 0;
+      endPointY += endPointY === 200 && initPointY != 200 ? 100 : 0;
+      initPointX += 50;
+      endPointX += 50;
+    } else if (initPointY === endPointY) {
+      endPointX += endPointX === 200 && initPointX != 200 ? 100 : 0;
+      endPointY += endPointY === 200 && initPointY != 200 ? 100 : 0;
+      initPointY += 50;
+      endPointY += 50;
+    } else {
+      endPointX += endPointX === 200 ? 100 : 0;
+      endPointY += endPointY === 200 ? 100 : 0;
+      initPointX += initPointX === 200 ? 100 : 0;
+    }
+
+    return {
+      initPointX,
+      initPointY,
+      endPointX,
+      endPointY,
+    };
   }
 }
 
@@ -160,6 +213,7 @@ class TurnPlayerXState implements State {
       game.setWinner = game.getCurrentPlayer;
       game.setMessageStatus = `Ha ganado el jugador ${game.getWinner}`;
       game.setState = new EndGameState();
+      game.drawWinnerLine();
     } else if (game.getWinCombinations.length <= 1) {
       game.setMessageStatus = `Empate, reinicia el juego`;
       game.setState = new EndGameState();
@@ -191,6 +245,7 @@ class TurnPlayerOState implements State {
       game.setWinner = game.getCurrentPlayer;
       game.setMessageStatus = `Ganador el jugador ${game.getWinner}`;
       game.setState = new EndGameState();
+      game.drawWinnerLine();
     } else if (game.getWinCombinations.length <= 1) {
       game.setMessageStatus = `Empate, reinicia el juego`;
       game.setState = new EndGameState();

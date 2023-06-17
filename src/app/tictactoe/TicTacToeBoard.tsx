@@ -48,13 +48,13 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
       const rect = canvas?.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const modX = x % 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
-      const modY = y % 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
-      const position = (2 * (y - modY) + (x - modX + y - modY)) / 100; // TODO: este valor no debería estar quemado. Debe ser con respecto al width establecido(puede variar)
+      const modX = x % 100;
+      const modY = y % 100;
+      const position = (2 * (y - modY) + (x - modX + y - modY)) / 100;
       const pointX = x - modX;
       const pointY = y - modY;
       const messageStatus = game?.move(pointX, pointY, position);
-      setMessageStatus(messageStatus); // TODO: establecer mensaje de empate
+      setMessageStatus(messageStatus);
     }
   };
 
@@ -77,8 +77,20 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
     <>
       <div className={style.statusContainer}>
         <div className={style.playersContainer}>
-          <p className={`${style.player} ${style.playerX} ${getPlayerClass("X")}`}>X</p>
-          <p className={`${style.player} ${style.playerY} ${getPlayerClass("O")}`}>O</p>
+          <p
+            className={`${style.player} ${style.playerX} ${getPlayerClass(
+              "X"
+            )}`}
+          >
+            X
+          </p>
+          <p
+            className={`${style.player} ${style.playerY} ${getPlayerClass(
+              "O"
+            )}`}
+          >
+            O
+          </p>
         </div>
         <p className={style.messageStatus}>{messageStatus}</p>
       </div>
