@@ -133,9 +133,6 @@ export class Game {
 
   drawWinnerLine() {
     if (this.context) {
-      this.context.beginPath();
-      this.context.strokeStyle = "#fbec39bd";
-      this.context.lineWidth = 15;
       const initPointXCalc = (this.winnerCombination[0] % 3) * 100;
       const initPointYCalc = Math.floor(this.winnerCombination[0] / 3) * 100;
       const endPointXCalc = (this.winnerCombination[2] % 3) * 100;
@@ -148,9 +145,7 @@ export class Game {
           endPointXCalc,
           endPointYCalc
         );
-      this.context.moveTo(initPointX, initPointY);
-      this.context.lineTo(endPointX, endPointY);
-      this.context.stroke();
+      this.animatedDraw(initPointX, initPointY, endPointX, endPointY);
     }
   }
 
@@ -187,6 +182,59 @@ export class Game {
       endPointX,
       endPointY,
     };
+  }
+
+  animatedDraw(
+    initPointX: number,
+    initPointY: number,
+    endPointX: number,
+    endPointY: number
+  ) {
+    let movement = 0; // movimiento entre frames (lo que aumenta en cada ciclo). Va acumulando 
+    const movementBase = 0.05; // El aumento por defecto
+    const fps = 60; // frames per second
+    let count = 0; // conteo de ciclos
+    const context = this.context;
+
+    // Se inicializa la línea al inicio desde donde se va a dibujar
+    context.beginPath();
+    context.strokeStyle = "#fbec39bd";
+    context.lineWidth = 15;
+    context.moveTo(initPointX, initPointY);
+
+    // Método interno, se hizo esto porque el requestAnimationFrame recibe una función sin parámetros
+    // Y si se llamaba animatedDraw como tenía 4 parámetros, sacaba error
+    function animate() {
+      // setTimeout para controlar los fps
+      setTimeout(() => {
+        // Si el conteo de ciclos es igual a 1 dividido los aumentos base del movimiento
+        // Entonces se detiene la ejecución de la animación
+        // 1 representa 1 segundo
+        if (count === Math.round(1 / movementBase)) {
+          return;
+        }
+        // informa al navegador que se quiere realizar una animación y solicita que el navegador programe el repintado de la ventana para el próximo ciclo de animación
+        // recibe la función de dibujado como parámetro (esta función no debe tener parámetros)
+        requestAnimationFrame(animate);
+        movement += movementBase; // Se le suma el aumento base por defecto
+        count++;
+        // Se dibuja la línea, que tras cada ciclo va aumentando el tamaño hasta alcanzar el punto final
+        context.lineTo(
+          initPointX + (endPointX - initPointX) * movement,
+          initPointY + (endPointY - initPointY) * movement
+        );
+        context.stroke();
+
+        // Se mueve el puntero hasta donde se dibujó el trazo de la línea. Es decir, si se dibujó hasta el punto 100, se mueve el puntero hasta el punto 100, para luego dibujar de 100 a 200
+        // Esto se hace para que no sea siempre el mismo inicio y se repinte la línea, porque si no se hace toma siempre por ejemplo el punto 0 a 100, luego 0 a 200 y siempre se sobre escribe la línea
+        context.beginPath();
+        context.moveTo(
+          initPointX + (endPointX - initPointX) * movement,
+          initPointY + (endPointY - initPointY) * movement
+        );
+      }, 1000 / fps);
+    }
+    animate(); // Se llama la función por primera vez para que inicie la animación
   }
 }
 
