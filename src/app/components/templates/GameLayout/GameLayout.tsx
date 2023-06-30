@@ -12,7 +12,7 @@ export const GameLayout = ({ children, title }: LayoutProps) => {
     <StyledComponentsRegistry>
       <div>
         <GameMenu title={title} />
-        <main className={styles.gameContainer}>{children}</main>
+        <div className={styles.gameContainer}>{children}</div>
       </div>
     </StyledComponentsRegistry>
   );

@@ -1,9 +1,9 @@
-import Image from "next/image";
+import GameList from "./components/organisms/GamesList/GameList";
 
 export default function Home() {
   return (
-    <main>
-      <h1>index page.tsx</h1>
-    </main>
+    <div>
+      <GameList></GameList>
+    </div>
   );
 }
