@@ -1,0 +1,11 @@
+{
+  "games": [
+    {
+      "active": true,
+      "alt": "Juego tic tac toe",
+      "href": "tictactoe",
+      "src": "/images/tictactoe.png",
+      "title": "Tictactoe"
+    }
+  ]
+}

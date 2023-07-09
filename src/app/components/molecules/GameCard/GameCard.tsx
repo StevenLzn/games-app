@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { AiFillCaretDown } from "react-icons/ai";
 import { GameCardContainer, GameCardBox } from "./GameCardStyles";
 import GameCardImage from "../../atoms/GameCardImage/GameCardImage";
@@ -11,12 +11,13 @@ type GameCardProps = {
   src: string;
   alt: string;
   color?: string;
-  onClick: () => void;
+  path: string;
 };
 
-const GameCard: React.FC<GameCardProps> = ({ text, src, alt, onClick, color }) => {
+const GameCard: React.FC<GameCardProps> = ({ text, src, alt, path, color }) => {
+  const router = useRouter();
   return (
-    <GameCardBox onClick={onClick}>
+    <GameCardBox onClick={() => router.push(path)}>
       <GameCardContainer>
         <Subtitle text={text} color={color}></Subtitle>
         <GameCardImage src={src} alt={alt} height="100px" width="100%"></GameCardImage>

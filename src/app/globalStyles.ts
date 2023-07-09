@@ -2,19 +2,18 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-html, body {
+html {
     background: #f1f6f954;
     height: 100%;
+}
+
+html, body {
     padding: 0;
     margin: 0;
 }
 
-html {
-    margin: 0.5rem 0 0.25rem 0;
-}
-
 main {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 `;

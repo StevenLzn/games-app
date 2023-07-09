@@ -13,14 +13,22 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [messageStatus, setMessageStatus] = useState<string | undefined>();
   const [game, setGame] = useState<Game>();
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(1);
+    
     initGame();
+    console.log(3);
+    
+    setLoading(false);
   }, []);
 
   const initGame = (): void => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
+    console.log(canvas);
+    
     if (canvas && context) {
       context.lineWidth = 5;
       context.strokeStyle = "#343541";
@@ -38,6 +46,7 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
       context?.lineTo(width, (height / 3) * 2);
       context?.stroke();
     }
+    console.log(2);
   };
 
   const handleBoardClick: MouseEventHandler<HTMLCanvasElement> = (event) => {
@@ -72,6 +81,8 @@ const TicTacToeBoard = ({ height, width }: BoardProps) => {
     if (game?.getCurrentPlayer === player) return style.turn;
     return style.default;
   };
+
+  //if(isLoading) return <p>Loading...</p>
 
   return (
     <>

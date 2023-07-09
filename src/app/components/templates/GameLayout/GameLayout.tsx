@@ -1,4 +1,3 @@
-import StyledComponentsRegistry from "@/lib/styled-components/registry";
 import { GameMenu } from "../../organisms/GameMenu/GameMenu";
 import styles from "./GameLayout.module.css";
 
@@ -9,12 +8,10 @@ type LayoutProps = {
 
 export const GameLayout = ({ children, title }: LayoutProps) => {
   return (
-    <StyledComponentsRegistry>
-      <div>
-        <GameMenu title={title} />
-        <div className={styles.gameContainer}>{children}</div>
-      </div>
-    </StyledComponentsRegistry>
+    <div>
+      <GameMenu title={title} />
+      <div className={styles.gameContainer}>{children}</div>
+    </div>
   );
 };
 

@@ -17,12 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <GlobalStyles />
-        <StyledComponentsRegistry>
+      <StyledComponentsRegistry>
+        <body className={inter.className}>
+          <GlobalStyles />
           <Layout>{children}</Layout>
-        </StyledComponentsRegistry>
-      </body>
+        </body>
+      </StyledComponentsRegistry>
     </html>
   );
 }
