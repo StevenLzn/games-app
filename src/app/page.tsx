@@ -12,6 +12,7 @@ export default function Home() {
               alt={game.alt}
               src={game.src}
               href={game.href}
+              key={game.title}
             />
           );
         })}
