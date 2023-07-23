@@ -13,5 +13,5 @@ export const games: Game[] = [
     href: "tictactoe",
     src: "/images/tictactoe.png",
     title: "Tictactoe",
-  }
+  },
 ];

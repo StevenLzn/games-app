@@ -1,4 +1,5 @@
 import { AiOutlineSearch } from "react-icons/ai";
+
 export default function SearchInput({
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement>) {
