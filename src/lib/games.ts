@@ -14,4 +14,11 @@ export const games: Game[] = [
     src: "/images/tictactoe.png",
     title: "Tictactoe",
   },
+  {
+    active: true,
+    alt: "Juego memo test",
+    href: "memotest",
+    src: "/images/memoTest.png",
+    title: "MemoTest",
+  },
 ];
