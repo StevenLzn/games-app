@@ -14,6 +14,7 @@ export default function FlipCard({
   const [flipCard, setFlipCard] = useState(false);
 
   const handleFlipCard = () => {
+    if (flipCard === showBackCard) return;
     setFlipCard(!flipCard);
     setTimeout(() => {
       setShowBackCard(!showBackCard);
