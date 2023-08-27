@@ -13,6 +13,12 @@ export type Character = {
   created: Date;
 };
 
+export type CharacterMemoTest = Character & {
+  gameCharacterId?: string;
+  isDiscovered?: boolean;
+  showFrontCard?: boolean;
+};
+
 type Location = {
   name: string;
   url: string;

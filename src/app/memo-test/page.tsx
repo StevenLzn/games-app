@@ -1,17 +1,18 @@
 import { getManyCharacters } from "../api/rick-and-morty/getManyCharacters";
-import MemoTestCard from "../components/ui/cards/memo-test-card";
+import MemoTestBoard from "./_components/memo-test-board";
+import { CharacterMemoTest } from "../api/rick-and-morty/character";
 
-const TOTAL_CHARACTERS = 826;
-const BOARD_SIZE = 10; // 4x5 board
+const TOTAL_CHARACTERS_API = 826;
+const TOTAL_CHARACTERS_BOARD = 10; // 4x5 board
 
 export default async function Page() {
   const generateCharactersIds = () => {
     const charactersIds: number[] = [];
     let i = 0;
 
-    while (i < BOARD_SIZE) {
+    while (i < TOTAL_CHARACTERS_BOARD) {
       const randomId = Math.floor(
-        Math.random() * (TOTAL_CHARACTERS - 1 + 1) + 1
+        Math.random() * (TOTAL_CHARACTERS_API - 1 + 1) + 1
       );
       // Prevent repeated ids
       if (!charactersIds.includes(randomId)) {
@@ -23,13 +24,14 @@ export default async function Page() {
   };
 
   // TODO: Hacer una projection para que no me traiga datos innecesarios
-  const characters = await getManyCharacters(generateCharactersIds());
+  const characters: CharacterMemoTest[] = await getManyCharacters(
+    generateCharactersIds()
+  );
 
   return (
-    <div className="mt-4 mx-0 flex flex-row flex-wrap justify-center w-full sm:w-1/2 md:w-2/5 xl:w-1/4">
-      {characters.map((character) => (
-        <MemoTestCard characterName={character.name} img={character.image} />
-      ))}
-    </div>
+    <MemoTestBoard
+      characters={characters}
+      totalCharactersBoard={TOTAL_CHARACTERS_BOARD}
+    />
   );
 }
