@@ -27,7 +27,9 @@ export default function MemoTestBoard({
 
   const handleClick = (character: CharacterMemoTest) => {
     const status = game.current.move(character);
-    if (status === MoveStatus.NULL_MOVE) return;
+    if (status === MoveStatus.NULL_MOVE || status === MoveStatus.END_GAME) {
+      return;
+    }
     const timeout = status === MoveStatus.WRONG_MOVE ? 1000 : 0;
     setGameState([...game.current.getBoard]);
     setTimeout(() => {
@@ -37,11 +39,15 @@ export default function MemoTestBoard({
 
   return (
     <div className="flex flex-col items-center w-full sm:w-1/2 md:w-2/5 xl:w-1/4">
-      <div className="bg-white-100 text-black w-[180px] text-center p-3 rounded-lg mt-4 shadow-lg flex flex-row justify-evenly cursor-default">
-        <p className="w-2/3 cursor-default">Movimientos</p>
-        <p className="w-1/3 cursor-default">{game.current.getMoves}</p>
+      <div className="flex flex-col bg-white-100 text-black p-3 rounded-lg mt-4 shadow-lg  w-[215px]">
+        <div className="text-center flex flex-row justify-evenly cursor-default">
+          <p className="w-2/3 cursor-default">Movimientos</p>
+          <p className="w-1/3 cursor-default">{game.current.getMoves}</p>
+        </div>
+        <p className="bg-white-100 text-black m-0 pt-3 text-center cursor-default">
+          {game.current.getMessageStatus}
+        </p>
       </div>
-
       <div className="mt-4 mx-0 flex flex-row flex-wrap justify-center ">
         {gameState.map((character, index) => (
           <MemoTestCard

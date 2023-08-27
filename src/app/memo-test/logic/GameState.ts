@@ -12,6 +12,7 @@ export class Game {
   private boardSize: number;
   private totalMoves: number;
   private characterSelected: CharacterMemoTest | null;
+  private messageStatus: string;
 
   constructor(totalCharactersBoard: number) {
     this.state = new FirstSelectionState();
@@ -20,6 +21,7 @@ export class Game {
     this.board = [];
     this.totalMoves = 0;
     this.characterSelected = null;
+    this.messageStatus = "Selecciona una carta";
   }
 
   get getBoard(): CharacterMemoTest[] {
@@ -44,6 +46,14 @@ export class Game {
 
   addMove(): void {
     this.totalMoves++;
+  }
+
+  set setMessageStatus(message: string) {
+    this.messageStatus = message;
+  }
+
+  get getMessageStatus(): string {
+    return this.messageStatus;
   }
 
   move(character: CharacterMemoTest) {
@@ -78,6 +88,7 @@ class FirstSelectionState implements State {
       return MoveStatus.NULL_MOVE;
     }
 
+    game.setMessageStatus = "Selecciona el par";
     character.showFrontCard = true;
     game.setCharacterSelected = character;
     game.setState = new PairSelectionState();
@@ -104,7 +115,7 @@ class PairSelectionState implements State {
       return moveStatus;
     }
     game.addMove();
-    game.setState = new FirstSelectionState();
+    game.setState = this.setNextState(game);
     return moveStatus;
   }
 
@@ -128,11 +139,20 @@ class PairSelectionState implements State {
     }
     return moveStatus;
   }
+
+  setNextState(game: Game): State {
+    if (game.getBoard.some((character) => !character.isDiscovered)) {
+      game.setMessageStatus = "Selecciona una carta";
+      return new FirstSelectionState();
+    } else {
+      game.setMessageStatus = "Felicitaciones, ganaste!";
+      return new WinState();
+    }
+  }
 }
 
 class WinState implements State {
   move(game: Game, character: CharacterMemoTest): MoveStatus {
-    game.addMove();
     return MoveStatus.END_GAME;
   }
 }
