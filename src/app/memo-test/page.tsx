@@ -23,7 +23,6 @@ export default async function Page() {
     return charactersIds;
   };
 
-  // TODO: Hacer una projection para que no me traiga datos innecesarios
   const characters: CharacterMemoTest[] = await getManyCharacters(
     generateCharactersIds()
   );

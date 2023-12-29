@@ -12,7 +12,6 @@ export async function getManyCharacters(ids: number[] | string[]) {
 
   const character = (await res.json()) as Character[];
 
-  //TODO: Que pasa cuando no existe el id suministrado?
   if (character.length === 0) {
     throw new Error("No se encontraron personajes con los ids suministrados");
   }

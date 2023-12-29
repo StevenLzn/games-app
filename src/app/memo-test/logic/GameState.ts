@@ -80,6 +80,13 @@ export class Game {
     }
     this.board = board;
   }
+
+  resetGame(characters: CharacterMemoTest[]) {
+    this.buildRandomBoard(characters);
+    this.totalMoves = 0;
+    this.state = new FirstSelectionState();
+    this.messageStatus = "Selecciona una carta";
+  }
 }
 
 class FirstSelectionState implements State {

@@ -7,6 +7,7 @@ import {
 import MemoTestCard from "./memo-test-card";
 import { useEffect, useRef, useState } from "react";
 import { MoveStatus } from "../interfaces/MoveStatus.enum";
+import Button from "../../components/ui/buttons/button";
 
 type MemoTestBoardProps = {
   characters: Character[];
@@ -37,16 +38,26 @@ export default function MemoTestBoard({
     }, timeout);
   };
 
+  const resetGame = () => {
+    game.current.resetGame(characters);
+    setGameState([...game.current.getBoard]);
+  };
+
   return (
     <div className="flex flex-col items-center w-full sm:w-1/2 md:w-2/5 xl:w-1/4">
-      <div className="flex flex-col bg-white-100 text-black p-3 rounded-lg mt-4 shadow-lg  w-[215px]">
-        <div className="text-center flex flex-row justify-evenly cursor-default">
-          <p className="w-2/3 cursor-default">Movimientos</p>
-          <p className="w-1/3 cursor-default">{game.current.getMoves}</p>
+      <div className="flex mt-4">
+        <div className="flex flex-col bg-white-100 text-black p-3 rounded-lg shadow-lg  w-[215px] mr-3">
+          <div className="text-center flex flex-row justify-evenly cursor-default">
+            <p className="w-2/3 cursor-default">Movimientos</p>
+            <p className="w-1/3 cursor-default">{game.current.getMoves}</p>
+          </div>
+          <p className="bg-white-100 text-black m-0 pt-3 text-center cursor-default">
+            {game.current.getMessageStatus}
+          </p>
         </div>
-        <p className="bg-white-100 text-black m-0 pt-3 text-center cursor-default">
-          {game.current.getMessageStatus}
-        </p>
+        <div className="flex items-center">
+          <Button onClick={resetGame}>Reiniciar</Button>
+        </div>
       </div>
       <div className="mt-4 mx-0 flex flex-row flex-wrap justify-center ">
         {gameState.map((character, index) => (

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import SearchInput from "./components/ui/inputs/search-input";
+
+import GameSearchInput from "./components/game-search-input";
+
 import "../styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,9 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="w-5/6 sm:w-1/2 md:w-2/5 xl:w-1/4 mt-3 mx-auto ">
-          <SearchInput placeholder="Buscar un juego" />
-        </div>
+        <GameSearchInput />
         {children}
       </body>
     </html>
