@@ -33,6 +33,7 @@ export default function MemoTestCard({
               height={70}
               width={70}
               quality={85}
+              priority
             />
             <h3 className="mb-1 text-gray-100 text-xs font-light w-[70px] text-center overflow-hidden text-ellipsis whitespace-nowrap">
               {character.name}
