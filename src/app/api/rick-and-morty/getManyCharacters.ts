@@ -10,7 +10,7 @@ const TOTAL_CHARACTERS_BOARD = 10; // 4x5 board
 export async function getManyCharacters() {
   const ids: number[] | string[] = generateCharactersIds();
   const idsQuery: string = ids.join(",");
-  const res = await fetch(`${API_BASE_URL}/${idsQuery}`);
+  const res = await fetch(`${API_BASE_URL}/${idsQuery}`, { cache: "no-store" });
   if (!res.ok) {
     throw new Error("Algo salió mal, intente más tarde");
   }
