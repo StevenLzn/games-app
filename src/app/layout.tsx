@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import GameSearchInput from "./components/game-search-input";
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <GameSearchInput />
         {children}
+        <Analytics />
       </body>
     </html>
   );
